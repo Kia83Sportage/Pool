@@ -26,8 +26,8 @@ FPS = 120
 # Players
 white = (255, 255, 255)
 black = (0, 0, 0)
-player1_name = input("Player 1: ")
-player2_name = input("Player 2: ")
+player1_name = "Amir"
+player2_name = "Kia"
 font = pygame.font.Font(None, 45)
 player1_text = font.render(player1_name, True, white)
 player2_text = font.render(player2_name, True, white)
@@ -50,11 +50,13 @@ cue_ball_potted = False
 taking_shot = True
 powering = False
 pottedBalls = []
+witch_player = 1
 
 # Load Images
 tableImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\table.png").convert_alpha()
 cueImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\cue.png").convert_alpha()
 previewImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\preview.png").convert_alpha()
+turnImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\turn.png").convert_alpha()
 ballImgs = []
 ballImages = []
 for i in range(1, 17):
@@ -149,6 +151,12 @@ while running:
     # Players
     screen.blit(player1_text, (120, 50))
     screen.blit(player2_text, (700, 50))
+    
+    # Players Turn
+    if witch_player == 1:
+        screen.blit(turnImg, (85, 50))
+    elif witch_player == 2:
+        screen.blit(turnImg, (665, 50))
 
     # Tables
     screen.blit(tableImg, (100, 150))
@@ -165,12 +173,19 @@ while running:
                     cue_ball_potted = True
                     ball.body.position = (1020, SCREEN_HEIGHT / 2 + 50)
                     ball.body.velocity = (0.0, 0.0)
+                    if witch_player == 1:
+                        witch_player = 2
+                    else: witch_player = 1
                 else:
                     ball.body.position = (210, 888)
                     space.remove(ball.body)
                     balls.remove(ball)
                     pottedBalls.append(ballImgs[i])
                     ballImgs.pop(i)
+            #elif ball_dist > pocket_dia / 2:
+                #if witch_player == 1:
+                        #witch_player = 2
+                #else: witch_player = 1
 
     # Balls
     for i, ball in enumerate(balls):
@@ -217,16 +232,18 @@ while running:
 
     # Draw Potted Balls
     for i, ball in enumerate(pottedBalls):
-        if ball == ballImages[0] or ball == ballImages[1] or ball == ballImages[2] or ball == ballImages[3] or ball == ballImages[4] or ball == ballImages[5] or ball == ballImages[6]:
+        if ball in ballImages[0:7]:
             w = ball.get_width()
             h = ball.get_height()
-            ball = pygame.transform.scale(ball, (w * 0.7, h * 0.7))
+            ball = pygame.transform.scale(ball, (w * 0.8, h * 0.8))
             screen.blit(ball, (120 + (i * 50), 90))
-        elif ball == ballImages[8] or ball == ballImages[9] or ball == ballImages[10] or ball == ballImages[11] or ball == ballImages[12] or ball == ballImages[13] or ball == ballImages[14]:
+            i += 1
+        elif ball in ballImages[8:15]:
             w = ball.get_width()
             h = ball.get_height()
-            ball = pygame.transform.scale(ball, (w * 0.7, h * 0.7))
+            ball = pygame.transform.scale(ball, (w * 0.8, h * 0.8))
             screen.blit(ball, (700 + (i * 50), 90))
+            i += 1
         elif ball == ballImages[7] and len(balls) > 1:
             text("You Lost The Game!", font, (255, 0, 0), SCREEN_WIDTH / 2 - 180, SCREEN_HEIGHT / 2 - 100)
             game_running = False
@@ -234,6 +251,9 @@ while running:
     # Fouls Handeling
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE]:
+        if witch_player == 1:
+            witch_player = 2
+        else: witch_player = 1
         mouse_x, mouse_y = pygame.mouse.get_pos()
         screen.blit(previewImg, (mouse_x-20, mouse_y-20))
         if event.type == pygame.MOUSEBUTTONDOWN:
