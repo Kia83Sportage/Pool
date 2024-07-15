@@ -55,15 +55,17 @@ cue_ball_potted = False
 taking_shot = True
 powering = False
 pottedBalls = []
-counter = 0
 
 # Load Images
 tableImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\table.png").convert_alpha()
 cueImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\cue.png").convert_alpha()
+previewImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\preview.png").convert_alpha()
 ballImgs = []
+ballImages = []
 for i in range(1, 17):
     ball_image = pygame.image.load(f"D:\Programming\Python\Projects\Pool\pic\\ball{i}.png").convert_alpha()
     ballImgs.append(ball_image)
+    ballImages.append(ball_image)
 
 # Creating Balls
 def create_ball(radius, pos):
@@ -160,22 +162,20 @@ while running:
             ball_dist = math.sqrt((ball_x_dist ** 2) + (ball_y_dist ** 2))
             if ball_dist <= pocket_dia / 2:
                 # Checking Cue Ball
-                print(i + counter)
                 if i == len(balls) - 1:
                     cue_ball_potted = True
-                    ball.body.position = (920, SCREEN_HEIGHT / 2)
+                    ball.body.position = (1020, SCREEN_HEIGHT / 2 + 50)
                     ball.body.velocity = (0.0, 0.0)
-                #elif i == len(balls) + counter - 9 and len(balls) > 1:
-                    #space.remove(ball.body)
-                    #text("You Lost The Game!", font, (255, 0, 0), SCREEN_WIDTH / 2 - 180, SCREEN_HEIGHT / 2 - 100)
-                    #game_running = False
+                elif ball == ballImages[7] and len(balls) > 1:
+                    space.remove(ball.body)
+                    text("You Lost The Game!", font, (255, 0, 0), SCREEN_WIDTH / 2 - 180, SCREEN_HEIGHT / 2 - 100)
+                    game_running = False
                 else:
                     ball.body.position = (210, 888)
                     space.remove(ball.body)
                     balls.remove(ball)
                     pottedBalls.append(ballImgs[i])
                     ballImgs.pop(i)
-                    counter += 1
 
     # Balls
     for i, ball in enumerate(balls):
@@ -191,6 +191,7 @@ while running:
     if taking_shot == True and game_running == True:
         if cue_ball_potted == True:
             mouse_x, mouse_y = pygame.mouse.get_pos()
+            screen.blit(previewImg, (mouse_x-20, mouse_y-20))
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 3:  
@@ -221,12 +222,12 @@ while running:
 
     # Draw Potted Balls
     for i, ball in enumerate(pottedBalls):
-        if len(balls) - 9 > 9:
+        if ball == ballImages[0] or ball == ballImages[1] or ball == ballImages[2] or ball == ballImages[3] or ball == ballImages[4] or ball == ballImages[5] or ball == ballImages[6]:
             w = ball.get_width()
             h = ball.get_height()
             ball = pygame.transform.scale(ball, (w * 0.7, h * 0.7))
             screen.blit(ball, (100 + (i * 50), 200))
-        elif len(balls) - 9 < 9:
+        elif ball == ballImages[8] or ball == ballImages[9] or ball == ballImages[10] or ball == ballImages[11] or ball == ballImages[12] or ball == ballImages[13] or ball == ballImages[14]:
             w = ball.get_width()
             h = ball.get_height()
             ball = pygame.transform.scale(ball, (w * 0.7, h * 0.7))
