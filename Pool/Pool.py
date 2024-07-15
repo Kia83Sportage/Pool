@@ -226,12 +226,12 @@ while running:
             w = ball.get_width()
             h = ball.get_height()
             ball = pygame.transform.scale(ball, (w * 0.7, h * 0.7))
-            screen.blit(ball, (100 + (i * 50), 0))
+            screen.blit(ball, (100 + (i * 50), 50))
         elif ball == ballImages[8] or ball == ballImages[9] or ball == ballImages[10] or ball == ballImages[11] or ball == ballImages[12] or ball == ballImages[13] or ball == ballImages[14]:
             w = ball.get_width()
             h = ball.get_height()
             ball = pygame.transform.scale(ball, (w * 0.7, h * 0.7))
-            screen.blit(ball, (700 + (i * 50), 0))
+            screen.blit(ball, (700 + (i * 50), 50))
   
     # Checking Winner
     if len(balls) == 1:
