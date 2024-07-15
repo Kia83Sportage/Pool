@@ -268,8 +268,6 @@ while running:
                             elif exit_rect.collidepoint(mouse_x, mouse_y):
                                 pygame.quit()
                                 sys.exit()
-            #elif event.key == pygame.K_SPACE:
-                
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1 and taking_shot == True:
                 powering = True
