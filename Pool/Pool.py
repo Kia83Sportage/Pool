@@ -12,7 +12,7 @@ SCREEN_HEIGHT = 880
 
 # Screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Pool")
+pygame.display.set_caption("8 Ball")
 
 # Pymunk Space
 space = pymunk.Space()
@@ -36,7 +36,7 @@ player2_text = font.render(player2_name, True, white)
 resume_text = font.render("Resume", True, white)
 exit_text = font.render("Exit", True, white)
 resume_rect = resume_text.get_rect(center=(1545 // 2, 1.2*678 // 3))
-exit_rect = exit_text.get_rect(center=(1545 // 2, 1.4*678 // 3))
+exit_rect = exit_text.get_rect(center=(1545 // 2, 1.4*678 // 3 + 100))
 menu = True
 
 # Game Variables
@@ -50,9 +50,12 @@ cue_ball_potted = False
 taking_shot = True
 powering = False
 pottedBalls = []
+counter1 = 0
+counter2 = 0
 witch_player = 1
 
 # Load Images
+backgroundImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\background6.png").convert_alpha()
 tableImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\table.png").convert_alpha()
 cueImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\cue.png").convert_alpha()
 previewImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\preview.png").convert_alpha()
@@ -98,12 +101,12 @@ pockets = [(158, 200), (698, 197), (1239, 200), (156, 770), (697, 775), (1240, 7
 
 # Creating Cushions
 cushions = [
-    [(185, 200), (204, 218), (662, 218), (669, 200)],
-    [(730, 200), (735, 218), (1195, 218), (1215, 200)],
-    [(185, 778), (202, 758), (669, 758), (672, 778)],
-    [(730, 778), (735, 758), (1195, 758), (1215, 778)],
-    [(143, 222), (166, 246), (166, 722), (143, 746)],
-    [(1257, 222), (1234, 246), (1234, 722), (1257, 746)],
+    [(160, 185), (185, 203), (670, 203), (679, 185)],
+    [(720, 185), (730, 203), (1215, 203), (1235, 185)],
+    [(160, 790), (185, 773), (670, 773), (679, 790)],
+    [(720, 790), (730, 773), (1215, 773), (1235, 790)],
+    [(135, 210), (151, 235), (151, 740), (135, 765)],
+    [(1265, 210), (1248, 235), (1248, 740), (1265, 765)],
 ]
 def create_cushion(poly_dims):
     body = pymunk.Body(body_type = pymunk.Body.STATIC)
@@ -146,7 +149,7 @@ while running:
     space.step(1/FPS)
 
     # Background
-    screen.fill((0, 0, 0))
+    screen.blit(backgroundImg, (0, 0))
 
     # Players
     screen.blit(player1_text, (120, 50))
@@ -177,11 +180,20 @@ while running:
                         witch_player = 2
                     else: witch_player = 1
                 else:
+                    if witch_player == 1 and ball in ballImages[0:6]:
+                        counter1 += 1
+                    elif witch_player == 2 and ball in ballImages[8:15]:
+                        counter2 += 1
+                    elif witch_player == 1 and ball in ballImages[8:15]:
+                        witch_player = 2
+                    elif witch_player == 2 and ball in ballImages[0:6]:
+                        witch_player = 1 
                     ball.body.position = (210, 888)
                     space.remove(ball.body)
                     balls.remove(ball)
                     pottedBalls.append(ballImgs[i])
                     ballImgs.pop(i)
+                print(counter1, counter2)
             #elif ball_dist > pocket_dia / 2:
                 #if witch_player == 1:
                         #witch_player = 2
@@ -232,18 +244,16 @@ while running:
 
     # Draw Potted Balls
     for i, ball in enumerate(pottedBalls):
-        if ball in ballImages[0:7]:
+        if ball in ballImages[0:6]:
             w = ball.get_width()
             h = ball.get_height()
             ball = pygame.transform.scale(ball, (w * 0.8, h * 0.8))
-            screen.blit(ball, (120 + (i * 50), 90))
-            i += 1
+            screen.blit(ball, (120 + (counter1 * 50), 90))
         elif ball in ballImages[8:15]:
             w = ball.get_width()
             h = ball.get_height()
             ball = pygame.transform.scale(ball, (w * 0.8, h * 0.8))
-            screen.blit(ball, (700 + (i * 50), 90))
-            i += 1
+            screen.blit(ball, (700 + (counter2 * 50), 90))
         elif ball == ballImages[7] and len(balls) > 1:
             text("You Lost The Game!", font, (255, 0, 0), SCREEN_WIDTH / 2 - 180, SCREEN_HEIGHT / 2 - 100)
             game_running = False
