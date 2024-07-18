@@ -157,7 +157,7 @@ while running:
     screen.blit(scorebarImg, (190, 5))
 
     # Players
-    screen.blit(player1_text, (450, 51))
+    screen.blit(player1_text, (430, 51))
     screen.blit(player2_text, (900, 51))
     
     # Players Turn
