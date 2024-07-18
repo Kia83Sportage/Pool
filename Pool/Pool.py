@@ -50,8 +50,8 @@ cue_ball_potted = False
 taking_shot = True
 powering = False
 pottedBalls = []
-counter1 = 0
-counter2 = 0
+ballsType1 = []
+ballsType2 = []
 witch_player = 1
 
 # Load Images
@@ -191,10 +191,10 @@ while running:
                     balls.remove(ball)
                     pottedBalls.append(ballImgs[i])
                     ballImgs.pop(i)
-                    if pottedBalls[-1] in ballImages[0:6]:
-                        counter1 += 1
+                    if pottedBalls[-1] in ballImages[0:7]:
+                        ballsType1.append(pottedBalls[-1])
                     elif pottedBalls[-1] in ballImages[8:15]:
-                        counter2 += 1
+                        ballsType2.append(pottedBalls[-1])
                 
             #elif ball_dist > pocket_dia / 2:
                 #if witch_player == 1:
@@ -245,18 +245,13 @@ while running:
         force_direction = 1
 
     # Draw Potted Balls
-    print(counter1, counter2)
     for i, ball in enumerate(pottedBalls):
-        if ball in ballImages[0:6]:
-            w = ball.get_width()
-            h = ball.get_height()
-            ball = pygame.transform.scale(ball, (w * 1.1, h * 1.1))
-            screen.blit(ball, (210 + (counter1 * 45), 97))
+        if ball in ballImages[0:7]:
+            for j in range(len(ballsType1)):
+                screen.blit(ballsType1[j], (207 + (j * 45), 98))
         elif ball in ballImages[8:15]:
-            w = ball.get_width()
-            h = ball.get_height()
-            ball = pygame.transform.scale(ball, (w * 1.1, h * 1.1))
-            screen.blit(ball, (900 + (counter2 * 45), 97))
+            for k in range(len(ballsType2)):
+                screen.blit(ballsType2[k], (887 + (k * 45), 98))
         elif ball == ballImages[7] and len(balls) > 1:
             text("You Lost The Game!", font, (255, 0, 0), SCREEN_WIDTH / 2 - 180, SCREEN_HEIGHT / 2 - 100)
             game_running = False
