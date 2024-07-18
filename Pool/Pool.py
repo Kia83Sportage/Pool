@@ -28,7 +28,7 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 player1_name = "Amir"
 player2_name = "Kia"
-font = pygame.font.Font(None, 45)
+font = pygame.font.Font(None, 40)
 player1_text = font.render(player1_name, True, white)
 player2_text = font.render(player2_name, True, white)
 
@@ -57,8 +57,10 @@ witch_player = 1
 # Load Images
 backgroundImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\background6.png").convert_alpha()
 tableImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\table.png").convert_alpha()
+pocketImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\pocket.png").convert_alpha()
 cueImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\cue.png").convert_alpha()
 previewImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\preview.png").convert_alpha()
+scorebarImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\scorebar.png").convert_alpha()
 turnImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\turn.png").convert_alpha()
 ballImgs = []
 ballImages = []
@@ -151,9 +153,12 @@ while running:
     # Background
     screen.blit(backgroundImg, (0, 0))
 
+    # Score Bar
+    screen.blit(scorebarImg, (190, 5))
+
     # Players
-    screen.blit(player1_text, (120, 50))
-    screen.blit(player2_text, (700, 50))
+    screen.blit(player1_text, (450, 51))
+    screen.blit(player2_text, (900, 51))
     
     # Players Turn
     if witch_player == 1:
@@ -161,8 +166,9 @@ while running:
     elif witch_player == 2:
         screen.blit(turnImg, (665, 50))
 
-    # Tables
+    # Table
     screen.blit(tableImg, (100, 150))
+    screen.blit(pocketImg, (1300, 220))
 
     # Checking Potted
     for i, ball in enumerate(balls):
@@ -180,20 +186,16 @@ while running:
                         witch_player = 2
                     else: witch_player = 1
                 else:
-                    if witch_player == 1 and ball in ballImages[0:6]:
-                        counter1 += 1
-                    elif witch_player == 2 and ball in ballImages[8:15]:
-                        counter2 += 1
-                    elif witch_player == 1 and ball in ballImages[8:15]:
-                        witch_player = 2
-                    elif witch_player == 2 and ball in ballImages[0:6]:
-                        witch_player = 1 
                     ball.body.position = (210, 888)
                     space.remove(ball.body)
                     balls.remove(ball)
                     pottedBalls.append(ballImgs[i])
                     ballImgs.pop(i)
-                print(counter1, counter2)
+                    if pottedBalls[-1] in ballImages[0:6]:
+                        counter1 += 1
+                    elif pottedBalls[-1] in ballImages[8:15]:
+                        counter2 += 1
+                
             #elif ball_dist > pocket_dia / 2:
                 #if witch_player == 1:
                         #witch_player = 2
@@ -243,17 +245,18 @@ while running:
         force_direction = 1
 
     # Draw Potted Balls
+    print(counter1, counter2)
     for i, ball in enumerate(pottedBalls):
         if ball in ballImages[0:6]:
             w = ball.get_width()
             h = ball.get_height()
-            ball = pygame.transform.scale(ball, (w * 0.8, h * 0.8))
-            screen.blit(ball, (120 + (counter1 * 50), 90))
+            ball = pygame.transform.scale(ball, (w * 1.1, h * 1.1))
+            screen.blit(ball, (210 + (counter1 * 45), 97))
         elif ball in ballImages[8:15]:
             w = ball.get_width()
             h = ball.get_height()
-            ball = pygame.transform.scale(ball, (w * 0.8, h * 0.8))
-            screen.blit(ball, (700 + (counter2 * 50), 90))
+            ball = pygame.transform.scale(ball, (w * 1.1, h * 1.1))
+            screen.blit(ball, (900 + (counter2 * 45), 97))
         elif ball == ballImages[7] and len(balls) > 1:
             text("You Lost The Game!", font, (255, 0, 0), SCREEN_WIDTH / 2 - 180, SCREEN_HEIGHT / 2 - 100)
             game_running = False
