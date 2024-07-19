@@ -13,6 +13,8 @@ SCREEN_HEIGHT = 880
 # Screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("8 Ball")
+icon = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\icon.png")
+pygame.display.set_icon(icon)
 
 # Pymunk Space
 space = pymunk.Space()
@@ -63,7 +65,7 @@ witch_player = 1
 counter = 0
 
 # Load Images
-backgroundImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\background6.png").convert_alpha()
+backgroundImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\background4.png").convert_alpha()
 tableImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\table.png").convert_alpha()
 pocketImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\pocket.png").convert_alpha()
 cueImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\cue.png").convert_alpha()
@@ -327,7 +329,7 @@ while running:
                 clock.tick(60)
                 menu = True
                 while menu:
-                    screen.fill(black)
+                    screen.blit(backgroundImg, (0,0))
                     screen.blit(resume_text, resume_rect)
                     screen.blit(exit_text, exit_rect)
                     pygame.display.flip()
