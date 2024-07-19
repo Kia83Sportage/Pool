@@ -50,10 +50,13 @@ cue_ball_potted = False
 taking_shot = True
 powering = False
 foul_checking = True
+foul_done = False
 pottedBalls = []
 pocketBalls = []
 ballsType1 = []
 ballsType2 = []
+player1_type = 0
+player2_type = 0
 lastpottedball_x = 1200
 lastpottedball_y = 231
 witch_player = 1
@@ -208,6 +211,12 @@ while running:
                     space.remove(ball.body)
                     balls.remove(ball)
                     pottedBalls.append(ballImgs[i])
+                    if (pottedBalls[0] in ballImages[0:7] and witch_player == 1) or (pottedBalls[0] in ballImages[8:15] and witch_player == 2):
+                        player1_type = 1
+                        player2_type = 2
+                    elif (pottedBalls[0] in ballImages[0:7] and witch_player == 2) or (pottedBalls[0] in ballImages[8:15] and witch_player == 1):
+                        player1_type = 2
+                        player2_type = 1
                     lastpottedball_x = 1200
                     lastpottedball_y = 231
                     ballImgs.pop(i)
@@ -215,6 +224,7 @@ while running:
                         ballsType1.append(pottedBalls[-1])
                     elif pottedBalls[-1] in ballImages[8:15]:
                         ballsType2.append(pottedBalls[-1])
+                
                 
             #elif ball_dist > pocket_dia / 2:
                 #if witch_player == 1:
@@ -267,10 +277,10 @@ while running:
 
     # Draw Scored Balls
     for i, ball in enumerate(pottedBalls):
-        if ball in ballImages[0:7]:
+        if ball in ballImages[0:7] and witch_player == 1:
             for j in range(len(ballsType1)):
                 screen.blit(ballsType1[j], (207 + (j * 45), 98))
-        elif ball in ballImages[8:15]:
+        elif ball in ballImages[8:15] and witch_player == 2:
             for k in range(len(ballsType2)):
                 screen.blit(ballsType2[k], (887 + (k * 45), 98))
         elif ball == ballImages[7] and len(balls) > 1:
@@ -282,11 +292,21 @@ while running:
         for i in range(len(balls)-1):
             if int(balls[i].body.velocity[0]) != 0 or int(balls[i].body.velocity[1]) != 0:
                 foul_checking = False
-                if 0 <= i <= 7:
-                    print("yes")
-                elif 8 <= i <= 15:
-                    print("no")
-
+                if (0 <= i <= 7 and witch_player == 1 and player1_type == 2) or (8 <= i <= 15 and witch_player == 1 and player1_type == 1):
+                    witch_player = 2
+                    foul_done = True
+                elif (0 <= i <= 7 and witch_player == 2 and player1_type == 2) or (8 <= i <= 15 and witch_player == 2 and player1_type == 1):
+                    witch_player = 1
+                    foul_done = True
+    if foul_done == True:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            screen.blit(previewImg, (mouse_x-20, mouse_y-20))
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 3:  
+                        balls[-1].body.position = (mouse_x, mouse_y)
+                        foul_done = False
+                    
     # Checking Winner
     if len(balls) == 1:
         text("You Won The Game!", font, (255, 255, 255), SCREEN_WIDTH / 2 - 180, SCREEN_HEIGHT / 2 - 100)
