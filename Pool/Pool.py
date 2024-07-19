@@ -70,6 +70,7 @@ cueImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\cue.png").c
 previewImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\preview.png").convert_alpha()
 scorebarImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\scorebar.png").convert_alpha()
 turnImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\turn.png").convert_alpha()
+timeImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\time.png").convert_alpha()
 ballImgs = []
 ballImages = []
 for i in range(1, 17):
@@ -170,9 +171,15 @@ while running:
     
     # Players Turn
     if witch_player == 1:
-        screen.blit(turnImg, (85, 50))
+        screen.blit(turnImg, (270, 53))
     elif witch_player == 2:
-        screen.blit(turnImg, (665, 50))
+        screen.blit(turnImg, (1105, 53))
+
+    # Players Time
+    if witch_player == 1:
+        screen.blit(timeImg, (518, 25))
+    elif witch_player == 2:
+        screen.blit(timeImg, (765, 25))
 
     # Draw Potted Balls
     screen.blit(pocketImg, (1300, 220))
