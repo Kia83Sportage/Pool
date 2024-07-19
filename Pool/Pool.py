@@ -49,6 +49,7 @@ force_direction = 1
 cue_ball_potted = False
 taking_shot = True
 powering = False
+foul_checking = True
 pottedBalls = []
 pocketBalls = []
 ballsType1 = []
@@ -247,6 +248,7 @@ while running:
         cue_angle = math.degrees(math.atan2(y, x))
         cue.update(cue_angle)
         cue.draw(screen)
+        foul_checking = True
 
     # Powering
     if powering == True:
@@ -276,16 +278,14 @@ while running:
             game_running = False
     
     # Fouls Handeling
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_SPACE]:
-        if witch_player == 1:
-            witch_player = 2
-        else: witch_player = 1
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        screen.blit(previewImg, (mouse_x-20, mouse_y-20))
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 3:  
-                balls[-1].body.position = (mouse_x, mouse_y)
+    if foul_checking == True:
+        for i in range(len(balls)-1):
+            if int(balls[i].body.velocity[0]) != 0 or int(balls[i].body.velocity[1]) != 0:
+                foul_checking = False
+                if 0 <= i <= 7:
+                    print("yes")
+                elif 8 <= i <= 15:
+                    print("no")
 
     # Checking Winner
     if len(balls) == 1:
