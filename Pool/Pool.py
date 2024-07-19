@@ -50,9 +50,13 @@ cue_ball_potted = False
 taking_shot = True
 powering = False
 pottedBalls = []
+pocketBalls = []
 ballsType1 = []
 ballsType2 = []
+lastpottedball_x = 1200
+lastpottedball_y = 231
 witch_player = 1
+counter = 0
 
 # Load Images
 backgroundImg = pygame.image.load("D:\Programming\Python\Projects\Pool\pic\\background6.png").convert_alpha()
@@ -166,9 +170,22 @@ while running:
     elif witch_player == 2:
         screen.blit(turnImg, (665, 50))
 
+    # Draw Potted Balls
+    screen.blit(pocketImg, (1300, 220))
+    if len(pottedBalls) > 0:
+        if lastpottedball_x <= 1334:
+            lastpottedball_x += 0.7
+            screen.blit(pottedBalls[-1], (lastpottedball_x, lastpottedball_y))
+        if lastpottedball_x >= 1330 and lastpottedball_y <= 653 - (38 * (len(pottedBalls)-1)):
+            lastpottedball_y += 0.7
+            screen.blit(pottedBalls[-1], (lastpottedball_x, lastpottedball_y))
+        if lastpottedball_x >= 1334 and lastpottedball_y >= 653 - (38 * (len(pottedBalls)-1)):
+            screen.blit(pottedBalls[-1], (lastpottedball_x, lastpottedball_y))
+    for i in range(len(pottedBalls)-1):
+            screen.blit(pottedBalls[i], (1334, 653 - (38 * i)))
+            
     # Table
     screen.blit(tableImg, (100, 150))
-    screen.blit(pocketImg, (1300, 220))
 
     # Checking Potted
     for i, ball in enumerate(balls):
@@ -190,6 +207,8 @@ while running:
                     space.remove(ball.body)
                     balls.remove(ball)
                     pottedBalls.append(ballImgs[i])
+                    lastpottedball_x = 1200
+                    lastpottedball_y = 231
                     ballImgs.pop(i)
                     if pottedBalls[-1] in ballImages[0:7]:
                         ballsType1.append(pottedBalls[-1])
@@ -244,7 +263,7 @@ while running:
         force = 0
         force_direction = 1
 
-    # Draw Potted Balls
+    # Draw Scored Balls
     for i, ball in enumerate(pottedBalls):
         if ball in ballImages[0:7]:
             for j in range(len(ballsType1)):
