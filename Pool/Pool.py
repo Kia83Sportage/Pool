@@ -174,15 +174,15 @@ while running:
     screen.blit(pocketImg, (1300, 220))
     if len(pottedBalls) > 0:
         if lastpottedball_x <= 1334:
-            lastpottedball_x += 0.7
+            lastpottedball_x += 1
             screen.blit(pottedBalls[-1], (lastpottedball_x, lastpottedball_y))
-        if lastpottedball_x >= 1330 and lastpottedball_y <= 653 - (38 * (len(pottedBalls)-1)):
-            lastpottedball_y += 0.7
+        if lastpottedball_x >= 1330 and lastpottedball_y <= 773 - (38 * (len(pottedBalls)-1)):
+            lastpottedball_y += 1
             screen.blit(pottedBalls[-1], (lastpottedball_x, lastpottedball_y))
-        if lastpottedball_x >= 1334 and lastpottedball_y >= 653 - (38 * (len(pottedBalls)-1)):
+        if lastpottedball_x >= 1334 and lastpottedball_y >= 773 - (38 * (len(pottedBalls)-1)):
             screen.blit(pottedBalls[-1], (lastpottedball_x, lastpottedball_y))
     for i in range(len(pottedBalls)-1):
-            screen.blit(pottedBalls[i], (1334, 653 - (38 * i)))
+            screen.blit(pottedBalls[i], (1334, 773 - (38 * i)))
             
     # Table
     screen.blit(tableImg, (100, 150))
